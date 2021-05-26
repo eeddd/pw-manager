@@ -32,9 +32,12 @@ namespace PWmanager
             {
                 Hide();
                 frmAccounts frm = new frmAccounts();
-                frm.CurrentUser = user.Email;
+                frm.Text = "Accounts | PWmanager (logged as " + user.Email + ")";
                 frm.ShowDialog();
                 Show();
+
+                txtPassword.Clear();
+                txtPassword.Focus();
             }
             else
             {

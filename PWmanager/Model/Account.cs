@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PWmanager.Model
 {
-    class Account
+    public class Account
     {
         public int ID { get; private set; }
 

@@ -19,6 +19,7 @@ namespace PWmanager.DB
             connectionString = Properties.Settings.Default.ConnectionString;
         }
 
+        #region Connections
         public bool Open()
         {
             try
@@ -55,20 +56,11 @@ namespace PWmanager.DB
         {
             Close();
         }
-
+        #endregion
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
         
-        public void Insert()
-        {
-
-        }
-
-        public void Update()
-        {
-
-        }
-
         public bool Login(string email, string password, out User user)
         {
             bool status = false;
@@ -96,6 +88,7 @@ namespace PWmanager.DB
             return status;
         }
 
+
         public List<User> GetUsers()
         {
             List<User> list = new List<User>();
@@ -117,7 +110,88 @@ namespace PWmanager.DB
             return list;
         }
 
+        public List<Account> GetAccounts()
+        {
+            List<Account> list = new List<Account>();
 
+            if (Open())
+            {
+                MySqlCommand cmd = new MySqlCommand("SELECT * FROM accounts", _connection);
+                MySqlDataReader rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    list.Add(new Account(
+                        rdr.GetInt32("id"),
+                        rdr.GetInt32("group_id"),
+                        rdr.GetInt32("added_by"),
+                        rdr.GetString("email"),
+                        rdr.GetString("password"),
+                        rdr.GetDateTime("created_at")));
+                }
+
+                rdr.Close();
+                Close();
+            }
+
+            return list;
+        }
+        
+        public List<Account> GetAccountsBy(AccountGroup accountGroup)
+        {
+            List<Account> list = new List<Account>();
+
+            if (Open())
+            {
+                MySqlCommand cmd = new MySqlCommand("SELECT * FROM accounts WHERE group_id=@1", _connection);
+                cmd.Parameters.AddWithValue("@1", accountGroup.ID);
+                cmd.Prepare();
+                MySqlDataReader rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    list.Add(new Account(
+                        rdr.GetInt32("id"),
+                        rdr.GetInt32("group_id"),
+                        rdr.GetInt32("added_by"),
+                        rdr.GetString("email"),
+                        rdr.GetString("password"),
+                        rdr.GetDateTime("created_at")));
+                }
+
+                rdr.Close();
+                Close();
+            }
+
+            return list;
+        }
+
+
+        public List<AccountGroup> GetAccountGroups()
+        {
+            List<AccountGroup> list = new List<AccountGroup>();
+
+            if (Open())
+            {
+                MySqlCommand cmd = new MySqlCommand("SELECT * FROM account_groups ORDER BY name ASC", _connection);
+                MySqlDataReader rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    list.Add(new AccountGroup(
+                        rdr.GetInt32("ID"),
+                        rdr.GetString("name"),
+                        rdr.GetString("description"),
+                        rdr.GetDateTime("created_at")
+                        ));
+                }
+
+                rdr.Close();
+                Close();
+            }
+
+            return list;
+        }
     }
 
 
