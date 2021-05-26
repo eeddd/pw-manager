@@ -58,9 +58,7 @@ namespace PWmanager.DB
         }
         #endregion
 
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        
+        #region Auth
         public bool Login(string email, string password, out User user)
         {
             bool status = false;
@@ -77,6 +75,7 @@ namespace PWmanager.DB
                 if (rdr.Read())
                 {
                     _user = new User(rdr.GetInt32("id"), rdr.GetString("name"), rdr.GetString("email"));
+                    CurrentUser.Set(_user);
                     status = true;
                 }
 
@@ -87,7 +86,13 @@ namespace PWmanager.DB
             user = _user;
             return status;
         }
+        #endregion
 
+        #region User
+        public User ReadUser(MySqlDataReader rdr)
+        {
+            return new User(rdr.GetInt32("id"), rdr.GetString("name"), rdr.GetString("email"));
+        }
 
         public List<User> GetUsers()
         {
@@ -100,7 +105,7 @@ namespace PWmanager.DB
 
                 while (rdr.Read())
                 {
-                    list.Add(new User(rdr.GetInt32("id"), rdr.GetString("name"), rdr.GetString("email")));
+                    list.Add(ReadUser(rdr));
                 }
 
                 rdr.Close();
@@ -109,7 +114,21 @@ namespace PWmanager.DB
 
             return list;
         }
+        #endregion
 
+        #region Account
+        public Account ReadAccount(MySqlDataReader rdr)
+        {
+            return new Account(
+                        rdr.GetInt32("id"),
+                        rdr.GetInt32("group_id"),
+                        rdr.GetInt32("added_by"),
+                        rdr.GetString("name"),
+                        rdr.GetString("email"),
+                        rdr.GetString("password"),
+                        rdr.GetString("notes"),
+                        rdr.GetDateTime("created_at"));
+        }
         public List<Account> GetAccounts()
         {
             List<Account> list = new List<Account>();
@@ -121,13 +140,7 @@ namespace PWmanager.DB
 
                 while (rdr.Read())
                 {
-                    list.Add(new Account(
-                        rdr.GetInt32("id"),
-                        rdr.GetInt32("group_id"),
-                        rdr.GetInt32("added_by"),
-                        rdr.GetString("email"),
-                        rdr.GetString("password"),
-                        rdr.GetDateTime("created_at")));
+                    list.Add(ReadAccount(rdr));
                 }
 
                 rdr.Close();
@@ -150,13 +163,7 @@ namespace PWmanager.DB
 
                 while (rdr.Read())
                 {
-                    list.Add(new Account(
-                        rdr.GetInt32("id"),
-                        rdr.GetInt32("group_id"),
-                        rdr.GetInt32("added_by"),
-                        rdr.GetString("email"),
-                        rdr.GetString("password"),
-                        rdr.GetDateTime("created_at")));
+                    list.Add(ReadAccount(rdr));
                 }
 
                 rdr.Close();
@@ -166,6 +173,47 @@ namespace PWmanager.DB
             return list;
         }
 
+        public int InsertAccount(Account account)
+        {
+            int rows = 0; // affected rows
+            try
+            {
+                if (Open())
+                {
+                    using (var cmd = new MySqlCommand(
+                        "INSERT INTO accounts ( group_id,  added_by,  name,  email,  password,  notes)" +
+                                     " VALUES (@group_id, @added_by, @name, @email, @password, @notes)",
+                        _connection))
+                    {
+                        cmd.Parameters.AddWithValue("@group_id", account.GroupID);
+                        cmd.Parameters.AddWithValue("@added_by", account.AddedBy);
+                        cmd.Parameters.AddWithValue("@name", account.Name);
+                        cmd.Parameters.AddWithValue("@email", account.Email);
+                        cmd.Parameters.AddWithValue("@password", account.Password);
+                        cmd.Parameters.AddWithValue("@notes", account.Notes);
+                        cmd.Prepare();
+                        rows = cmd.ExecuteNonQuery();
+                        Trace.WriteLine("Insert: affected rows " + rows);
+                    }
+                }
+            }
+            catch
+            {
+            }
+            return rows;
+        }
+        #endregion
+
+        #region AccountGroup
+        private AccountGroup ReadAccountGroup(MySqlDataReader rdr)
+        {
+            return new AccountGroup(
+                        rdr.GetInt32("ID"),
+                        rdr.GetString("name"),
+                        rdr.GetString("description"),
+                        rdr.GetDateTime("created_at")
+                        );
+        }
 
         public List<AccountGroup> GetAccountGroups()
         {
@@ -178,12 +226,7 @@ namespace PWmanager.DB
 
                 while (rdr.Read())
                 {
-                    list.Add(new AccountGroup(
-                        rdr.GetInt32("ID"),
-                        rdr.GetString("name"),
-                        rdr.GetString("description"),
-                        rdr.GetDateTime("created_at")
-                        ));
+                    list.Add(ReadAccountGroup(rdr));
                 }
 
                 rdr.Close();
@@ -192,6 +235,8 @@ namespace PWmanager.DB
 
             return list;
         }
+        #endregion
+
     }
 
 

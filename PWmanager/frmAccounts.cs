@@ -49,5 +49,35 @@ namespace PWmanager
             var binding = new BindingList<Account>(accounts);
             dataGridView1.DataSource = binding;
         }
+        public void ReloadAccounts()
+        {
+            dataGridView1.Rows.Clear();
+            dataGridView1.Refresh();
+
+            using (var db = new DBConnect())
+            {
+                var list = db.GetAccounts();
+                LoadAccounts(list);
+                cboGroup.SelectedIndex = -1;
+            }
+        }
+
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            txtSearch.Clear();
+        }
+                
+        private void btnNewAccount_Click(object sender, EventArgs e)
+        {
+            frmNewAccount frm = new frmNewAccount();
+
+            AccountGroup[] groups = new AccountGroup[cboGroup.Items.Count];
+            cboGroup.Items.CopyTo(groups, 0);
+            frm.cboGroup.Items.AddRange(groups);
+
+            frm.ShowDialog();
+
+            ReloadAccounts();
+        }
     }
 }
