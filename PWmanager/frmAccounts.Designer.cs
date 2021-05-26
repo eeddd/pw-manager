@@ -37,6 +37,7 @@ namespace PWmanager
             this.label3 = new System.Windows.Forms.Label();
             this.panelAccount = new System.Windows.Forms.Panel();
             this.panelGroup = new System.Windows.Forms.Panel();
+            this.lblUser = new System.Windows.Forms.Label();
             this.panelAccount.SuspendLayout();
             this.panelGroup.SuspendLayout();
             this.SuspendLayout();
@@ -96,7 +97,7 @@ namespace PWmanager
             this.panelAccount.Controls.Add(this.label3);
             this.panelAccount.Controls.Add(this.textBox1);
             this.panelAccount.Controls.Add(this.textBox2);
-            this.panelAccount.Location = new System.Drawing.Point(248, 12);
+            this.panelAccount.Location = new System.Drawing.Point(248, 32);
             this.panelAccount.Name = "panelAccount";
             this.panelAccount.Size = new System.Drawing.Size(455, 82);
             this.panelAccount.TabIndex = 6;
@@ -105,25 +106,36 @@ namespace PWmanager
             // 
             this.panelGroup.Controls.Add(this.label1);
             this.panelGroup.Controls.Add(this.comboBox1);
-            this.panelGroup.Location = new System.Drawing.Point(12, 12);
+            this.panelGroup.Location = new System.Drawing.Point(12, 32);
             this.panelGroup.Name = "panelGroup";
             this.panelGroup.Size = new System.Drawing.Size(230, 82);
             this.panelGroup.TabIndex = 7;
+            // 
+            // lblUser
+            // 
+            this.lblUser.AutoSize = true;
+            this.lblUser.Location = new System.Drawing.Point(13, 11);
+            this.lblUser.Name = "lblUser";
+            this.lblUser.Size = new System.Drawing.Size(0, 15);
+            this.lblUser.TabIndex = 8;
             // 
             // frmAccounts
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1056, 530);
+            this.Controls.Add(this.lblUser);
             this.Controls.Add(this.panelGroup);
             this.Controls.Add(this.panelAccount);
             this.Name = "frmAccounts";
             this.Text = "Accounts";
+            this.Load += new System.EventHandler(this.frmAccounts_Load);
             this.panelAccount.ResumeLayout(false);
             this.panelAccount.PerformLayout();
             this.panelGroup.ResumeLayout(false);
             this.panelGroup.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -137,5 +149,6 @@ namespace PWmanager
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Panel panelAccount;
         private System.Windows.Forms.Panel panelGroup;
+        private System.Windows.Forms.Label lblUser;
     }
 }
