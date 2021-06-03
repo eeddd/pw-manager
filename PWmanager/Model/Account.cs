@@ -7,11 +7,11 @@ namespace PWmanager.Model
 {
     public class Account : IModel
     {
-        public int ID { get; private set; }
+        public int ID { get; set; }
 
-        public int GroupID { get; private set; }
+        public int GroupID { get; set; }
 
-        public int AddedBy { get; private set; }
+        public int AddedBy { get; set; }
 
         public string Name { get; set; }
 
@@ -21,20 +21,7 @@ namespace PWmanager.Model
 
         public string Notes { get; set; }
 
-        public DateTime CreatedAt { get; private set; }
-
-
-        public Account(int id, int groupID, int addedBy, string name,string email, string password, string notes, DateTime createdAt)
-        {
-            ID = id;
-            GroupID = groupID;
-            AddedBy = addedBy;
-            Name = name;
-            Email = email;
-            Password = password;
-            Notes = notes;
-            CreatedAt = createdAt;
-        }
+        public DateTime CreatedAt { get; set; }
 
 
     }

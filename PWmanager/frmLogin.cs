@@ -36,6 +36,7 @@ namespace PWmanager
                 frm.ShowDialog();
                 Show();
 
+                CenterToScreen();
                 txtPassword.Clear();
                 txtPassword.Focus();
             }

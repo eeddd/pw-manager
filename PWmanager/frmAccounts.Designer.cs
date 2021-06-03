@@ -32,13 +32,14 @@ namespace PWmanager
             this.label1 = new System.Windows.Forms.Label();
             this.cboGroup = new System.Windows.Forms.ComboBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.Email = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Password = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CreatedAt = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.btnClear = new System.Windows.Forms.Button();
             this.btnNewAccount = new System.Windows.Forms.Button();
-            this.Email = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Password = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CreatedAt = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnDelete = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -76,12 +77,41 @@ namespace PWmanager
             this.Password,
             this.CreatedAt});
             this.dataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dataGridView1.Location = new System.Drawing.Point(13, 35);
+            this.dataGridView1.Location = new System.Drawing.Point(-14, 69);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowTemplate.Height = 25;
+            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(1031, 483);
             this.dataGridView1.TabIndex = 9;
+            this.dataGridView1.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
+            // 
+            // Email
+            // 
+            this.Email.DataPropertyName = "Email";
+            this.Email.HeaderText = "Email";
+            this.Email.MinimumWidth = 100;
+            this.Email.Name = "Email";
+            this.Email.ReadOnly = true;
+            this.Email.Width = 300;
+            // 
+            // Password
+            // 
+            this.Password.DataPropertyName = "Password";
+            this.Password.HeaderText = "Password";
+            this.Password.MinimumWidth = 100;
+            this.Password.Name = "Password";
+            this.Password.ReadOnly = true;
+            this.Password.Width = 200;
+            // 
+            // CreatedAt
+            // 
+            this.CreatedAt.DataPropertyName = "CreatedAt";
+            this.CreatedAt.HeaderText = "Date Created";
+            this.CreatedAt.MinimumWidth = 100;
+            this.CreatedAt.Name = "CreatedAt";
+            this.CreatedAt.ReadOnly = true;
+            this.CreatedAt.Width = 200;
             // 
             // txtSearch
             // 
@@ -122,38 +152,22 @@ namespace PWmanager
             this.btnNewAccount.UseVisualStyleBackColor = true;
             this.btnNewAccount.Click += new System.EventHandler(this.btnNewAccount_Click);
             // 
-            // Email
+            // btnDelete
             // 
-            this.Email.DataPropertyName = "Email";
-            this.Email.HeaderText = "Email";
-            this.Email.MinimumWidth = 100;
-            this.Email.Name = "Email";
-            this.Email.ReadOnly = true;
-            this.Email.Width = 300;
-            // 
-            // Password
-            // 
-            this.Password.DataPropertyName = "Password";
-            this.Password.HeaderText = "Password";
-            this.Password.MinimumWidth = 100;
-            this.Password.Name = "Password";
-            this.Password.ReadOnly = true;
-            this.Password.Width = 200;
-            // 
-            // CreatedAt
-            // 
-            this.CreatedAt.DataPropertyName = "CreatedAt";
-            this.CreatedAt.HeaderText = "Date Created";
-            this.CreatedAt.MinimumWidth = 100;
-            this.CreatedAt.Name = "CreatedAt";
-            this.CreatedAt.ReadOnly = true;
-            this.CreatedAt.Width = 200;
+            this.btnDelete.Location = new System.Drawing.Point(350, 5);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(75, 23);
+            this.btnDelete.TabIndex = 14;
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // frmAccounts
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1056, 530);
+            this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnNewAccount);
             this.Controls.Add(this.btnClear);
             this.Controls.Add(this.label2);
@@ -182,5 +196,6 @@ namespace PWmanager
         private System.Windows.Forms.DataGridViewTextBoxColumn Email;
         private System.Windows.Forms.DataGridViewTextBoxColumn Password;
         private System.Windows.Forms.DataGridViewTextBoxColumn CreatedAt;
+        private System.Windows.Forms.Button btnDelete;
     }
 }

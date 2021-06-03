@@ -6,21 +6,15 @@ namespace PWmanager.Model
 {
     public class User
     {
-        public int ID { get; private set; }
+        public int ID { get; set; }
 
         public string Name { get; set; }
 
         public string Email { get; set; }
 
-        public DateTime CreatedAt { get; private set; }
+        public DateTime CreatedAt { get; set; }
 
 
-        public User(int ID, string name, string email)
-        {
-            this.ID = ID;
-            Email = email;
-            Name = name;
-        }
     }
 
     public class CurrentUser

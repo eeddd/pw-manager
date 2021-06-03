@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace PWmanager
 {
@@ -22,14 +23,8 @@ namespace PWmanager
         {
             dataGridView1.AutoGenerateColumns = false;
 
-            using (var db = new DBConnect())
-            {
-                var groups = db.GetAccountGroups().ToArray();
-                cboGroup.Items.AddRange(groups);
-
-                var list = db.GetAccounts();
-                LoadAccounts(list);
-            }
+            ReloadAccountGroups();
+            ReloadAccounts();
         }
 
         private void cboGroup_SelectedIndexChanged(object sender, EventArgs e)
@@ -61,6 +56,15 @@ namespace PWmanager
                 cboGroup.SelectedIndex = -1;
             }
         }
+        public void ReloadAccountGroups()
+        {
+            cboGroup.Items.Clear();
+            using (var db = new DBConnect())
+            {
+                var groups = db.GetAccountGroups().ToArray();
+                cboGroup.Items.AddRange(groups);
+            }
+        }
 
         private void btnClear_Click(object sender, EventArgs e)
         {
@@ -76,8 +80,47 @@ namespace PWmanager
             frm.cboGroup.Items.AddRange(groups);
 
             frm.ShowDialog();
+            if (frm.DialogResult == DialogResult.OK)
+            {
+                ReloadAccountGroups();
+                ReloadAccounts();
+            }
+        }
 
-            ReloadAccounts();
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count > 0)
+                btnDelete.Visible = true;
+            else
+                btnDelete.Visible = false;
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count < 1)
+            {
+                MessageBox.Show("Empty Rows", "", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                return;
+            }
+
+            int selectedRowCount =
+            dataGridView1.Rows.GetRowCount(DataGridViewElementStates.Selected);
+
+            List<Account> accounts = new List<Account>();
+
+            for (int i = 0; i < selectedRowCount; i++)
+            {
+                accounts.Add((Account)dataGridView1.SelectedRows[i].DataBoundItem);
+            }
+            
+            using(var db = new DBConnect())
+            {
+                int rows = db.DeleteAccounts(accounts);
+                if (rows > 0)
+                {
+                    ReloadAccounts();
+                }
+            }
         }
     }
 }

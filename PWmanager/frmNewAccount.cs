@@ -23,19 +23,35 @@ namespace PWmanager
 
         }
 
+        private AccountGroup GetAccountGroup()
+        {
+            if (cboGroup.SelectedItem == null)
+                return new AccountGroup
+                {
+                    ID = 0,
+                    Name = cboGroup.Text,
+                    Description = "",
+                    CreatedAt = DateTime.Now
+                };
+            return (AccountGroup)cboGroup.SelectedItem;
+        }
+
         private void btnSave_Click(object sender, EventArgs e)
         {
-            AccountGroup grp = (AccountGroup)cboGroup.SelectedItem;
-            if (cboGroup.SelectedItem == null)
-                grp = new AccountGroup(0, "", "", DateTime.Now);
+            var group = GetAccountGroup();
 
-            var account = new Account(0, grp.ID,
-                CurrentUser.Get().ID,
-                txtName.Text,
-                txtEmail.Text,
-                txtPassword.Text,
-                txtNotes.Text,
-                DateTime.Now);
+            var account = new Account
+            {
+                ID = 0,
+                GroupID = group.ID,
+                AddedBy = CurrentUser.Get().ID,
+                Name = txtName.Text,
+                Email = txtEmail.Text,
+                Password = txtPassword.Text,
+                Notes = txtNotes.Text,
+                CreatedAt = DateTime.Now
+            };
+
             try
             {
                 using (var db = new DBConnect())
